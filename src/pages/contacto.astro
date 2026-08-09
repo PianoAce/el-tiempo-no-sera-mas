@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+import IconInstagram from "../components/IconInstagram.astro";
+import IconYoutube from "../components/IconYoutube.astro";
+---
+
+<Layout
+  title="Contacto: Colectivo El tiempo no será más"
+  description="Escríbenos por correo, síguenos en Instagram o mira nuestro canal de YouTube."
+>
+  <section class="pt-28 pb-12 md:pt-36 md:pb-16">
+    <h1 class="font-wordmark px-6 text-center text-page-heading leading-[0.9] text-ink md:px-10">
+      Contacto
+    </h1>
+  </section>
+
+  <section class="border-t border-ink/10 py-16 md:py-20">
+    <div class="mx-auto max-w-350 px-6 text-center md:px-10">
+      <div
+        class="mx-auto mb-8 h-0.5 w-16"
+        style="background-color: var(--accent);"
+      >
+      </div>
+
+      <a
+        href="mailto:colectivoeltiemponoseramas@gmail.com"
+        class="break-all font-sans text-xl text-ink transition-colors hover:text-ink/70 sm:text-3xl md:text-5xl"
+      >
+        colectivoeltiemponoseramas@gmail.com
+      </a>
+
+      <div class="mt-10 flex justify-center gap-8">
+        <a
+          href="https://www.instagram.com/eltiempo.no.sera.mas/"
+          aria-label="Instagram"
+          class="inline-flex text-ink/70 transition-colors hover:text-ink"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <IconInstagram class="h-13 w-13" />
+        </a>
+        <a
+          href="https://youtube.com/@colectivoeltiemponoseramas"
+          aria-label="YouTube"
+          class="inline-flex text-ink/70 transition-colors hover:text-ink"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <IconYoutube class="h-13 w-13" />
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

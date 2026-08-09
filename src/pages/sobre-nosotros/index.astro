@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import MusicianCard from "../../components/MusicianCard.astro";
+import { musicians } from "../../data/musicians";
+
+const bioParagraphs = [
+  "“El Tiempo No Será Más” es un colectivo conformado por jóvenes músicos profesionales y estudiantes avanzados, cuya labor se centra en la interpretación de música de cámara de alto nivel, articulada con propuestas performativas y escénicas que cuestionan y expanden el formato tradicional de las salas de concierto.",
+  "El uso del término colectivo responde a una visión artística y organizativa que apuesta por la horizontalidad, la colaboración interdisciplinar y la experimentación constante. Desde su creación, el grupo ha abordado una diversidad de formatos camerísticos, entre ellos el trío de piano, violonchelo y clarinete —con obras de Johannes Brahms, Carlota Garriga y Esteban Espitia, miembro del colectivo— y el trío de piano, violín y clarinete, destacando montajes como el Trío de Aram Khachaturian y composiciones originales de Espitia.",
+  "El nombre del colectivo hace referencia al compositor Olivier Messiaen y su Cuarteto para el fin de los tiempos, obra que los integrantes comenzaron a estudiar durante su etapa formativa en el Conservatorio de Música de la Universidad Nacional de Colombia, y que estableció un punto de partida significativo en su vínculo con la música de cámara. Esta obra, además, forma parte de su repertorio activo.",
+  "“El Tiempo No Será Más” ha ofrecido conciertos en espacios reconocidos como el Auditorio Teresa Cuervo, el Auditorio Guillermo Uribe Holguín y el Auditorio León de Greiff. Paralelamente, uno de sus ejes fundamentales es la intervención de espacios no convencionales, llevando la música de cámara a contextos alternativos a través de formatos escénicos que promueven nuevas formas de relación entre la obra, el intérprete y el público.",
+];
+---
+
+<Layout
+  title="Sobre nosotros: ETNSM"
+  description="Los integrantes del colectivo interdisciplinar de música contemporánea y puesta en escena El tiempo no será más."
+>
+  <section class="pt-28 pb-12 md:pt-36 md:pb-16">
+    <h1 class="font-wordmark px-6 text-center text-page-heading leading-[0.9] text-ink md:px-10">
+      Sobre nosotros
+    </h1>
+  </section>
+
+  <section class="border-t border-ink/10 py-16 md:py-20">
+    <div class="mx-auto max-w-350 px-6 md:px-10">
+      <div data-reveal class="grid grid-cols-1 md:grid-cols-12">
+        <div class="flex flex-col gap-6 md:col-span-8 md:col-start-3">
+          {
+            bioParagraphs.map((paragraph) => (
+              <p class="text-justify font-sans text-3xl leading-relaxed text-ink/70 hyphens-auto">
+
+                {paragraph}
+              </p>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-ink/10 pt-12 pb-8 md:pt-16 md:pb-10">
+    <h2 class="font-wordmark px-6 text-center text-page-heading leading-[0.9] text-ink md:px-10">
+      Integrantes
+    </h2>
+  </section>
+
+  <section class="px-6 pb-24 md:px-10 md:pb-32">
+    <div class="mx-auto grid max-w-350 grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+      {musicians.map((musician) => <MusicianCard musician={musician} />)}
+    </div>
+  </section>
+</Layout>

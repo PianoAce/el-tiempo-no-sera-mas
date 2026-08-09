@@ -1,0 +1,111 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Layout from "../layouts/Layout.astro";
+import ConcertCarousel from "../components/ConcertCarousel.astro";
+import type { ConcertSlide } from "../components/ConcertCarousel.astro";
+import cuarteto from "../assets/etnsm-cuarteto.jpg";
+
+// Todas las fotos de conciertos se cargan solas desde src/assets/carousel/,
+// sin necesidad de un import por foto: solo deja el archivo ahi y referencialo
+// por nombre con concertImage("nombre-del-archivo.jpg") mas abajo.
+const carouselImages = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/carousel/*.{jpg,jpeg,png,webp}",
+  { eager: true },
+);
+
+function concertImage(filename: string) {
+  const entry = Object.entries(carouselImages).find(([path]) =>
+    path.endsWith("/" + filename),
+  );
+  return entry?.[1].default;
+}
+
+// Placeholder: reemplaza estos dos slides con los conciertos reales.
+const concertSlides: ConcertSlide[] = [
+  {
+    title: "Franja Filarmónica de Cámara",
+    meta: "17 de septiembre 5:00 p.m. — Museo Casa Lleras (Cl. 70a #7 - 35)",
+    // ctaLabel: "Más información",
+    // ctaHref: "/proximos-conciertos",
+    image: concertImage("franja-filarmonica.jpg"),
+  },
+  {
+    title: "MAMBO Filarmónico",
+    meta: "27 de septiembre 11:00 a.m. — Museo de Arte Moderno de Bogotá (Calle 24 #6 - 00)",
+    // ctaLabel: "Más información",
+    // ctaHref: "/proximos-conciertos",
+    image: concertImage("mambo-filarmonico.jpg"),
+  },
+];
+---
+
+<Layout
+  title="Colectivo El tiempo no será más: música contemporánea y puesta en escena"
+  description="Colectivo interdisciplinar de música contemporánea y puesta en escena con sede en Bogotá."
+  transparentHeader
+>
+  <!-- Hero: foto a pantalla completa con el nombre del colectivo encima.
+       Es una seccion normal del flujo del documento, no un overlay: el
+       nombre aparece con un fade in al cargar y se queda ahi, sin
+       ocultarse ni retirarse. El usuario lo deja atras haciendo scroll,
+       como cualquier otra seccion de la pagina. -->
+  <section class="relative flex h-dvh items-center justify-center overflow-hidden text-center">
+    <div class="absolute inset-0">
+      <Image
+        src={cuarteto}
+        alt=""
+        width={1600}
+        height={1000}
+        class="h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 bg-ink/45"></div>
+    </div>
+
+    <div data-hero-reveal class="relative px-6">
+      <p class="font-sans font-light text-xl uppercase tracking-[0.3em] text-paper/80 sm:text-2xl">
+        Colectivo
+      </p>
+      <h1 class="font-wordmark mt-4 text-hero leading-[0.98] text-paper">
+        El tiempo no sera mas
+      </h1>
+    </div>
+  </section>
+
+  <!-- Conciertos: carrusel de dos columnas (foto + info) que alternan de
+       lado en cada slide. Contenido de ejemplo, ver nota junto a
+       concertSlides arriba. -->
+  <ConcertCarousel slides={concertSlides} />
+
+  <!-- Sobre nosotros: texto corto (pendiente, reemplazar) + boton
+       magnetico. El parrafo se revela linea por linea al hacer scroll
+       ([data-split-reveal], SplitText + ScrollTrigger en motion.ts,
+       inspirado en demos.gsap.com/demo/responsive-line-splits-on-scroll).
+       El boton sigue levemente el cursor dentro de su zona
+       ([data-magnetic], inspirado en
+       demos.gsap.com/demo/magnetic-button-overwrite-modes). -->
+  <section class="border-t border-ink/10 py-24 md:py-32">
+    <div class="mx-auto max-w-350 px-6 md:px-10">
+      <div class="grid grid-cols-1 md:grid-cols-12">
+        <div class="md:col-span-10 md:col-start-2">
+          <div class="mb-6 h-0.5 w-16" style="background-color: var(--accent);"></div>
+          <p
+            data-split-reveal
+            class="max-w-[60ch] font-sans text-2xl leading-snug text-ink md:text-4xl"
+          >
+            El nombre del colectivo hace referencia al compositor Olivier Messiaen y su Cuarteto para el fin de los tiempos, 
+            obra que los integrantes comenzaron a estudiar durante su etapa formativa en el Conservatorio de Música de la Universidad Nacional de Colombia, 
+            y que estableció un punto de partida significativo en su vínculo con la música de cámara.
+          </p>
+          <a
+            href="/sobre-nosotros"
+            data-magnetic
+            class="relative mt-8 inline-block border border-ink px-6 py-3 font-sans text-[13px] uppercase tracking-[0.08em] text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            <span data-magnetic-label class="inline-block">Sobre nosotros</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,43 @@
+---
+// Tarjeta de musico para la grilla de /sobre-nosotros: foto (o placeholder
+// etiquetado si aun no hay) con el nombre en una etiqueta papel que se
+// superpone a la esquina inferior izquierda, inspirado en la seccion de
+// artistas de avantgardeartistsagency.com. Enlaza a la ficha individual
+// (/sobre-nosotros/[slug]); la transicion de fade entre paginas la maneja
+// la regla @view-transition de global.css, sin JS.
+import { Image } from "astro:assets";
+import type { Musician } from "../data/musicians";
+
+interface Props {
+  musician: Musician;
+}
+
+const { musician } = Astro.props;
+---
+
+<a
+  href={`/sobre-nosotros/${musician.slug}`}
+  class="group relative block aspect-[3/4] overflow-hidden bg-sand/15"
+>
+  {
+    musician.image ? (
+      <Image
+        src={musician.image}
+        alt={musician.name}
+        width={600}
+        height={800}
+        class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+      />
+    ) : (
+      <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-ink/20 px-4 text-center">
+        <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-ink/40">
+          Fotografía pendiente
+        </p>
+      </div>
+    )
+  }
+
+  <span class="absolute bottom-4 left-4 border border-ink bg-paper px-3 py-1.5 font-sans text-xs uppercase tracking-[0.08em] text-ink">
+    {musician.name}
+  </span>
+</a>

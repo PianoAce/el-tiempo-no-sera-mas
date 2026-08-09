@@ -1,0 +1,238 @@
+---
+const navItems = [
+  { label: "Inicio", href: "/" },
+  { label: "Sobre nosotros", href: "/sobre-nosotros" },
+  { label: "Repertorio", href: "/repertorio" },
+//  { label: "Próximos conciertos", href: "/proximos-conciertos" },
+  { label: "Contacto", href: "/contacto" },
+];
+
+const currentPath = Astro.url.pathname;
+
+// transparent: el header nace sin fondo y con texto claro (para paginas
+// con una foto oscura debajo, como el hero de Inicio) y solo adopta el
+// estilo solido/oscuro de siempre despues de hacer scroll (ver script).
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+---
+
+<header
+  id="site-header"
+  data-transparent={transparent ? "true" : "false"}
+  class:list={[
+    "top-0 z-50 w-full border-b transition-colors duration-300",
+    transparent
+      ? "fixed border-transparent bg-transparent"
+      : "sticky border-ink/10 bg-paper/90 backdrop-blur-sm",
+  ]}
+>
+  <div class="mx-auto flex h-16 max-w-350 items-center justify-between px-6 md:px-10">
+    <a
+      href="/"
+      aria-label="Colectivo El tiempo no será más, inicio"
+      data-header-text
+      class:list={[
+        // translate-y: Bifur (font-wordmark) tiene metricas verticales
+        // distintas a Archivo; sin este ajuste el wordmark se ve pegado
+        // hacia arriba respecto al boton "Menu", aunque ambas cajas de
+        // linea esten centradas igual dentro del header.
+        "font-wordmark text-3xl uppercase tracking-[0.16em] transition-colors duration-300 translate-y-[2.8px]-translate-x-1",
+        transparent ? "text-paper" : "text-ink",
+      ]}
+    >
+      ETNSM
+    </a>
+
+    <button
+      type="button"
+      data-header-text
+      class:list={[
+        "font-sans text-[17px] uppercase tracking-[0.08em] font-bold transition-colors duration-300",
+        transparent ? "text-paper" : "text-ink",
+      ]}
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      id="menu-toggle"
+    >
+      Menú
+    </button>
+  </div>
+</header>
+
+<!-- Zona clickeable para cerrar el menu al tocar fuera del panel. No
+     oscurece el resto de la pagina (igual que el menu de referencia):
+     solo sirve para cerrar. -->
+<div
+  id="menu-backdrop"
+  class="fixed inset-0 z-30 opacity-0 pointer-events-none transition-opacity duration-300"
+  aria-hidden="true"
+>
+</div>
+
+<div
+  id="site-menu"
+  class="fixed inset-y-0 right-0 z-40 flex w-full translate-x-full flex-col justify-between overflow-y-auto border-l border-ink/10 bg-paper px-6 py-16 shadow-2xl transition-transform duration-500 ease-out md:w-1/2 md:px-10"
+  aria-hidden="true"
+>
+  <button
+    type="button"
+    id="menu-close"
+    aria-label="Cerrar menú"
+    class="absolute right-6 top-20 flex h-10 w-10 items-center justify-center text-ink/60 transition-colors hover:text-ink md:right-10 md:top-24"
+  >
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2.5 2.5l11 11M13.5 2.5l-11 11" stroke="currentColor" stroke-width="1.5" />
+    </svg>
+  </button>
+
+  <nav aria-label="Navegación principal" class="flex flex-1 items-center">
+    <ul class="w-full">
+      {
+        navItems.map((item) => {
+          const isCurrent = currentPath === item.href;
+          return (
+            <li class="border-b border-ink/10">
+              <a
+                href={item.href}
+                aria-current={isCurrent ? "page" : undefined}
+                data-menu-link
+                class="block py-4 font-sans text-3xl font-bold uppercase text-ink transition-colors sm:py-5 sm:text-4xl md:text-5xl"
+              >
+                <span class="menu-mask block overflow-hidden">
+                  <span class="menu-slide">
+                    <span class="menu-slide-original">{item.label}</span>
+                    <span class="menu-slide-copy" aria-hidden="true">
+                      {item.label}
+                    </span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+
+  <p class="font-sans text-xs uppercase tracking-[0.08em] text-ink/50">
+    Colectivo El tiempo no será más. Bogotá, Colombia.
+  </p>
+</div>
+
+<style>
+  /* Deslizar y reemplazar: el label original sube y desaparece, una copia
+     identica sube desde abajo y ocupa su lugar. .menu-mask (sin padding,
+     solo overflow-hidden por Tailwind) recorta exactamente a la altura
+     del label en flujo normal (menu-slide-original); el padding del
+     area clickeable vive en el <a> de afuera, no aqui, para que el 100%
+     de la copia coincida con el limite real del recorte. Como todo esta
+     en porcentajes de la propia caja, funciona igual si el label ocupa
+     una o dos lineas (responsive). */
+  .menu-slide {
+    position: relative;
+    display: block;
+  }
+
+  .menu-slide-original {
+    display: block;
+  }
+
+  .menu-slide-copy {
+    position: absolute;
+    inset: 0;
+    display: block;
+    transform: translateY(100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .menu-slide-original,
+    .menu-slide-copy {
+      transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    [data-menu-link]:hover .menu-slide-original {
+      transform: translateY(-100%);
+    }
+
+    [data-menu-link]:hover .menu-slide-copy {
+      transform: translateY(0%);
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("site-menu");
+  const backdrop = document.getElementById("menu-backdrop");
+  const closeBtn = document.getElementById("menu-close");
+  const links = menu?.querySelectorAll("[data-menu-link]");
+
+  function openMenu() {
+    menu?.classList.remove("translate-x-full");
+    menu?.setAttribute("aria-hidden", "false");
+    backdrop?.classList.remove("opacity-0", "pointer-events-none");
+    backdrop?.setAttribute("aria-hidden", "false");
+    toggle?.setAttribute("aria-expanded", "true");
+    if (toggle) toggle.textContent = "Cerrar";
+    document.documentElement.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    // Si el foco quedo en un elemento dentro del panel (ej. el boton X
+    // que se acaba de clickear), hay que sacarlo antes de marcar el
+    // panel aria-hidden: dejarlo ahi es invalido para lectores de
+    // pantalla (foco atrapado en contenido oculto).
+    if (menu?.contains(document.activeElement)) {
+      (document.activeElement as HTMLElement)?.blur();
+      toggle?.focus();
+    }
+    menu?.classList.add("translate-x-full");
+    menu?.setAttribute("aria-hidden", "true");
+    backdrop?.classList.add("opacity-0", "pointer-events-none");
+    backdrop?.setAttribute("aria-hidden", "true");
+    toggle?.setAttribute("aria-expanded", "false");
+    if (toggle) toggle.textContent = "Menú";
+    document.documentElement.style.overflow = "";
+  }
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  backdrop?.addEventListener("click", closeMenu);
+  closeBtn?.addEventListener("click", closeMenu);
+  links?.forEach((link) => link.addEventListener("click", closeMenu));
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Header transparente (ver prop `transparent`): se activa el fondo/borde
+  // solido y el texto oscuro apenas el usuario deja de estar arriba del todo.
+  const header = document.getElementById("site-header");
+  if (header?.dataset.transparent === "true") {
+    const textEls = header.querySelectorAll<HTMLElement>("[data-header-text]");
+    const threshold = 24;
+
+    const updateHeader = () => {
+      const scrolled = window.scrollY > threshold;
+      header.classList.toggle("bg-paper/90", scrolled);
+      header.classList.toggle("backdrop-blur-sm", scrolled);
+      header.classList.toggle("border-ink/10", scrolled);
+      header.classList.toggle("bg-transparent", !scrolled);
+      header.classList.toggle("border-transparent", !scrolled);
+      textEls.forEach((el) => {
+        el.classList.toggle("text-ink", scrolled);
+        el.classList.toggle("text-paper", !scrolled);
+      });
+    };
+
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+  }
+</script>

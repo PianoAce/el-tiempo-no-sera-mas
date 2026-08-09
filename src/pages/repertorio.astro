@@ -1,0 +1,153 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Contenido informado por la biografia del colectivo (Sobre nosotros).
+// Confirma titulos/opus exactos y agrega mas obras y formaciones cuando
+// las tengas; cada grupo es un objeto { formation, works } en este
+// arreglo.
+const repertoire = [
+  {
+    formation: "Trío para piano, violonchelo y clarinete",
+    works: [
+      { composer: "Johannes Brahms", title: "Trío en la menor, Op. 114" },
+      { composer: "Carlota Garriga", title: "Elegía" },
+      {
+        composer: "Esteban Espitia",
+        title: "Elegía, miembro del colectivo",
+      },
+    ],
+  },
+  {
+    formation: "Trío para piano, violín y clarinete",
+    works: [
+      {
+        composer: "Aram Khachaturian",
+        title: "Trío",
+      },
+      {
+        composer: "Béla Bartók",
+        title: "Contrastes",
+      },
+    ],
+  },
+  {
+    formation: "Cuarteto para piano, violín, violonchelo y clarinete",
+    works: [
+      {
+        composer: "Olivier Messiaen",
+        title: "Cuarteto para el fin de los tiempos",
+      },
+      {
+        composer: "Diego Vega",
+        title: "Divertimento",
+      },
+      {
+        composer: "Astor Piazzolla",
+        title: "Fuga y Misterio (Arr. Miguelangel Villanueva)",
+      },
+      {
+        composer: "Esteban Espitia",
+        title: "Unexpected Adventure, miembro del colectivo",
+      },
+      {
+        composer: "Esteban Espitia",
+        title: "祖母と私 (sobo to watashi), miembro del colectivo",
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Repertorio: Colectivo El tiempo no será más"
+  description="Obras y formaciones camerísticas del repertorio activo del colectivo."
+>
+  <section class="pt-28 pb-12 md:pt-36 md:pb-16">
+    <h1 class="font-wordmark px-6 text-center text-page-heading leading-[0.9] text-ink md:px-10">
+      Repertorio
+    </h1>
+  </section>
+
+  {
+    repertoire.map((group, gi) => {
+      const dark = gi % 2 === 1;
+      return (
+        <section
+          class:list={[
+            "border-t py-16 md:py-20",
+            dark ? "border-paper/10 bg-ink" : "border-ink/10 bg-paper",
+          ]}
+        >
+          <div class="mx-auto max-w-350 px-6 md:px-10">
+            <div data-reveal class="grid grid-cols-1 md:grid-cols-12">
+              <div class="md:col-span-10 md:col-start-2">
+                <div
+                  class="mb-6 h-0.5 w-16"
+                  style="background-color: var(--accent);"
+                />
+                <p
+                  class:list={[
+                    "font-sans text-xs uppercase tracking-widest",
+                    dark ? "text-paper/50" : "text-ink/50",
+                  ]}
+                >
+                  {String(gi + 1).padStart(2, "0")}
+                </p>
+                <h2
+                  class:list={[
+                    "mt-2 font-sans text-2xl leading-tight md:text-3xl",
+                    dark ? "text-paper" : "text-ink",
+                  ]}
+                >
+                  {group.formation}
+                </h2>
+
+                <ul
+                  class:list={[
+                    "mt-8 divide-y border-t",
+                    dark ? "divide-paper/10 border-paper/10" : "divide-ink/10 border-ink/10",
+                  ]}
+                >
+                  {group.works.map((work, wi) => (
+                    <li class="group flex items-baseline gap-6 py-6 md:gap-10">
+                      <span
+                        class="w-12 shrink-0 font-display text-3xl leading-none md:w-20 md:text-5xl"
+                        style="color: var(--accent);"
+                      >
+                        {String(wi + 1).padStart(2, "0")}
+                      </span>
+                      <div class="flex flex-1 flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
+                        <p
+                          class:list={[
+                            "relative inline-block w-fit font-sans text-xl md:text-2xl",
+                            dark ? "text-paper" : "text-ink",
+                          ]}
+                        >
+                          {work.composer}
+                          <span
+                            class:list={[
+                              "absolute -bottom-1 left-0 h-px w-0 transition-[width] duration-300 ease-out group-hover:w-full",
+                              dark ? "bg-paper" : "bg-ink",
+                            ]}
+                          />
+                        </p>
+                        <p
+                          class:list={[
+                            "font-sans text-lg font-semibold md:text-right",
+                            dark ? "text-paper/60" : "text-ink/60",
+                          ]}
+                        >
+                          {work.title}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    })
+  }
+</Layout>

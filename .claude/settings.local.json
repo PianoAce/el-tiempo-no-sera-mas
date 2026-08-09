@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__playwright-webkit__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_navigate",
+      "Bash(npx astro *)",
+      "Bash(cd \"/Users/elkinespitia/Documents/Esteban/ETNSM Pagina Web\" && npx astro dev stop 2>&1 | tail -2; sleep 1; npx astro dev --background 2>&1 | tail -2; sleep 2; rm -f m-*.png)",
+      "mcp__playwright__browser_evaluate"
+    ],
+    "deny": [
+      "mcp__playwright__browser_run_code_unsafe"
+    ],
+    "additionalDirectories": [
+      "/Users/elkinespitia/Documents/Esteban/ETNSM Pagina Web"
+    ]
+  }
+}

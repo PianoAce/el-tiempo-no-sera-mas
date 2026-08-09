@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+   Tipografia autoalojada.
+   Voz primaria (titulares): Bodoni Moda, serif afilada de alto contraste,
+   alternativa gratuita a Ogg / GT Alpina / Editorial New.
+   Voz secundaria (cuerpo): Archivo, neogrotesca aseptica e hiperlegible,
+   alternativa gratuita a Suisse Int'l / Neue Haas Grotesk.
+   Ambas son fuentes variables: un solo archivo cubre todo el rango de peso.
+--------------------------------------------------------------------- */
+@font-face {
+  font-family: "Bodoni Moda";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/bodoni-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Bodoni Moda";
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/bodoni-variable-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/archivo-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/archivo-variable-italic.woff2") format("woff2");
+}
+
+/* Bifur (Cassandre, 1929): en prueba, solo para el nombre del colectivo
+   (hero, splash y footer), nunca para titulares generales. Licencia de
+   dafont marcada "gratis para uso personal": pendiente de resolver una
+   licencia comercial antes de dar esto por definitivo. Sus letras son
+   intencionalmente incompletas por diseño (no es un bug de render); el
+   fallback a Bodoni Moda cubre los caracteres que Bifur no incluya (p. ej.
+   acentos). */
+@font-face {
+  font-family: "Bifur";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/BIFUR___.TTF") format("truetype");
+}
+
+/* ---------------------------------------------------------------------
+   Design tokens - "El tiempo no sera mas"
+   Capa estructural: fija en todo el sitio (~90% del uso de color).
+   Capa de acento: --accent es la unica variable que cambia por programa;
+   nunca se introduce un segundo acento en la misma pagina.
+--------------------------------------------------------------------- */
+:root {
+  --accent: #8b1e1e; /* rojo cadmio oscuro - acento por defecto / flagship */
+}
+
+@theme {
+  /* capa estructural */
+  --color-paper: #f5f1e8; /* blanco hueso / papel */
+  --color-ink: #17181c; /* grafito profundo / negro onice */
+  --color-sand: #b8a48a; /* terroso / arena */
+
+  /* capa de acento (dinamica via --accent) */
+  --color-accent: var(--accent);
+
+  /* tipografia */
+  --font-display: "Bodoni Moda", "Times New Roman", serif;
+  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  /* tamanos de titular grande, fluidos (clamp) en vez de fijos: se
+     achican solos en mobile en vez de desbordarse. Antes vivian como
+     style="font-size: ..." repetido en cada pagina; ahora son un solo
+     token, reutilizable como clase (text-hero / text-page-heading). */
+  --text-hero: clamp(2.25rem, 9vw, 6.25rem); /* hero de Inicio, tope 100px */
+  --text-page-heading: clamp(2.5rem, 12vw, 7.5rem); /* titulo de pagina, tope 120px */
+
+  /* radios: ascetismo tactil = cero curvas */
+  --radius-none: 0px;
+}
+
+/* Uso acotado de Bifur: solo donde aparece el nombre completo del
+   colectivo (hero, splash, footer). Ver nota de licencia junto al
+   @font-face. */
+.font-wordmark {
+  font-family: "Bifur", var(--font-display);
+}
+
+html {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Grano fotografico sutil: overlay fijo, nunca sobre contenedores con scroll.
+   Sin mix-blend-mode: en WebKit, `multiply` sobre un elemento `position:
+   fixed` de viewport completo pinta un bloque negro solido (bug verificado
+   en Playwright WebKit; Chromium no lo muestra). A esta opacidad la
+   diferencia visual entre "multiply" y blend normal es imperceptible. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* El revelado en scroll/carga lo maneja src/scripts/motion.ts (GSAP + Lenis).
+   Con JS deshabilitado o prefers-reduced-motion, el contenido es visible por
+   defecto: nada aqui lo oculta de entrada. */
+
+/* Transicion de fade entre paginas (navegacion normal, sin SPA/router: cada
+   click sigue siendo una carga de pagina real). API nativa del navegador,
+   soportada en Chromium; en navegadores sin soporte simplemente no pasa
+   nada y la navegacion es instantanea como siempre, sin JS de por medio.
+   Usada por ejemplo entre la grilla de musicos y la ficha de cada uno en
+   /sobre-nosotros. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.45s;
+  }
+}

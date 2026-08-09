@@ -1,0 +1,66 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import { musicians } from "../../data/musicians";
+
+export function getStaticPaths() {
+  return musicians.map((musician) => ({
+    params: { slug: musician.slug },
+    props: { musician },
+  }));
+}
+
+const { musician } = Astro.props;
+---
+
+<Layout
+  title={`${musician.name}: Colectivo El tiempo no será más`}
+  description={musician.bio}
+>
+  <section class="mx-auto max-w-350 px-6 pt-28 pb-24 md:px-10 md:pt-12 md:pb-32">
+    <a
+      href="/sobre-nosotros"
+      class="inline-flex items-center gap-2 font-sans text-[13px] uppercase tracking-[0.08em] text-ink/70 transition-colors hover:text-ink"
+    >
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 2 4 8l6 6" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+      Volver
+    </a>
+
+    <div class="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+      <div class="relative aspect-3/4 w-full bg-sand/15">
+        {
+          musician.image ? (
+            <Image
+              src={musician.image}
+              alt={musician.name}
+              width={900}
+              height={1200}
+              class="h-full w-full object-cover"
+            />
+          ) : (
+            <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-ink/20 px-6 text-center">
+              <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-ink/40">
+                Fotografía pendiente
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="flex flex-col justify-center">
+        <div class="mb-6 h-0.5 w-16" style="background-color: var(--accent);"></div>
+        <h1 class="font-wordmark text-4xl leading-tight text-ink md:text-6xl">
+          {musician.name}
+        </h1>
+        <p class="mt-3 font-sans text-sm uppercase tracking-[0.08em] text-ink/60">
+          {musician.role}
+        </p>
+        <p class="mt-8 max-w-[46ch] font-sans text-lg leading-relaxed text-ink/70">
+          {musician.bio}
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

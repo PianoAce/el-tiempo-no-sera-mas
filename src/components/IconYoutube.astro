@@ -1,0 +1,21 @@
+---
+// Icono de YouTube: mismo lenguaje que IconInstagram.astro (trazo fino,
+// sin relleno, stroke-width 1.5, currentColor).
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  width="20"
+  height="20"
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+>
+  <rect x="1.5" y="5" width="21" height="14" rx="4" stroke="currentColor" stroke-width="1.5" />
+  <path d="M10.5 9.2 15 12l-4.5 2.8V9.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+</svg>

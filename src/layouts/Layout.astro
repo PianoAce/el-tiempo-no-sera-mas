@@ -1,0 +1,74 @@
+---
+import { getImage } from "astro:assets";
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import defaultOgImage from "../assets/etnsm-cuarteto.jpg";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  transparentHeader?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = defaultOgImage,
+  transparentHeader = false,
+} = Astro.props;
+
+const ogImage = await getImage({
+  src: image,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+});
+const ogImageUrl = new URL(ogImage.src, Astro.site ?? Astro.url.origin).href;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F5F1E8" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="es_CO" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link
+      rel="preload"
+      href="/fonts/bodoni-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <title>{title}</title>
+  </head>
+  <body class="min-h-dvh bg-paper text-ink antialiased">
+    <div class="grain" aria-hidden="true"></div>
+    <Header transparent={transparentHeader} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import "../scripts/motion";
+    </script>
+  </body>
+</html>

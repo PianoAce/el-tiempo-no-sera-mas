@@ -1,0 +1,171 @@
+---
+// Carrusel de conciertos: dos columnas (foto + info) que alternan de lado
+// en cada slide, inspirado en la seccion de exposiciones de
+// guggenheim-bilbao.eus. Para agregar conciertos reales, edita el arreglo
+// `slides` donde se usa <ConcertCarousel /> (por ahora en src/pages/index.astro):
+//
+//   1. Importa la foto: import miConcierto from "../assets/mi-concierto.jpg";
+//   2. Agregala al arreglo: { title: "...", meta: "...", image: miConcierto, ... }
+//
+// Si un slide no trae `image`, se muestra un bloque placeholder claramente
+// etiquetado en su lugar (nunca una foto de stock), tal como pide CLAUDE.md.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+export interface ConcertSlide {
+  title: string;
+  /** Fecha y/o lugar en una sola linea, ej. "10.10.2026 — Teatro Mayor, Bogotá" */
+  meta: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  image?: ImageMetadata;
+}
+
+interface Props {
+  slides: ConcertSlide[];
+}
+
+const { slides } = Astro.props;
+---
+
+<section
+  class="relative min-h-[90vh] overflow-hidden border-t border-ink/10 bg-paper"
+  data-carousel
+>
+  {
+    slides.map((slide, i) => {
+      const flipped = i % 2 === 1;
+      return (
+        <div
+          class:list={["carousel-slide", "absolute inset-0 grid grid-cols-1 md:grid-cols-2", { "is-active": i === 0 }]}
+          data-index={i}
+          aria-hidden={i === 0 ? "false" : "true"}
+          inert={i !== 0}
+        >
+          <div
+            data-side={flipped ? "right" : "left"}
+            class:list={["relative aspect-13/12 w-full self-center", flipped ? "md:order-2" : "md:order-1"]}
+          >
+            {slide.image ? (
+              <Image
+                src={slide.image}
+                alt=""
+                width={1200}
+                height={800}
+                class="h-full w-full object-cover"
+              />
+            ) : (
+              <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-ink/20 bg-sand/15 px-6 text-center">
+                <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-ink/40">
+                  Fotografía pendiente
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div
+            data-side={flipped ? "left" : "right"}
+            class:list={["flex flex-col justify-center px-6 py-16 md:px-16", flipped ? "md:order-1" : "md:order-2"]}
+          >
+            <p class="font-sans text-xs uppercase tracking-[0.3em] text-ink/50">
+              <span style="color: var(--accent);">{String(i + 1).padStart(2, "0")}</span>
+              {" / "}
+              {String(slides.length).padStart(2, "0")}
+            </p>
+            <h2 class="mt-4 max-w-[16ch] font-sans font-semibold text-4xl leading-tight text-ink md:text-5xl">
+              {slide.title}
+            </h2>
+            <p class="mt-4 font-sans text-sm uppercase tracking-[0.08em] text-ink/60">
+              {slide.meta}
+            </p>
+            {slide.ctaHref && (
+              <a
+                href={slide.ctaHref}
+                class="mt-8 inline-block w-fit border border-ink px-6 py-3 font-sans text-[13px] uppercase tracking-[0.08em] text-ink transition-colors hover:bg-ink hover:text-paper"
+              >
+                {slide.ctaLabel ?? "Más información"}
+              </a>
+            )}
+          </div>
+        </div>
+      );
+    })
+  }
+
+  {
+    slides.length > 1 && (
+      <>
+        <button
+          type="button"
+          data-carousel-prev
+          aria-label="Concierto anterior"
+          class="absolute left-4 bottom-6 top-auto z-10 flex h-11 w-11 items-center justify-center text-ink/40 transition-colors hover:text-ink md:left-6 md:top-1/2 md:bottom-auto md:-translate-y-1/2"
+        >
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M10 2 4 8l6 6" stroke="currentColor" stroke-width="1.75" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          data-carousel-next
+          aria-label="Concierto siguiente"
+          class="absolute right-4 bottom-6 top-auto z-10 flex h-11 w-11 items-center justify-center text-ink/40 transition-colors hover:text-ink md:right-6 md:top-1/2 md:bottom-auto md:-translate-y-1/2"
+        >
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 2l6 6-6 6" stroke="currentColor" stroke-width="1.75" />
+          </svg>
+        </button>
+      </>
+    )
+  }
+</section>
+
+<style>
+  .carousel-slide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .carousel-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .carousel-slide {
+      transition: opacity 0.5s ease;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-slide"));
+    if (slides.length < 2) return;
+
+    let current = slides.findIndex((s) => s.classList.contains("is-active"));
+    if (current < 0) current = 0;
+
+    function goTo(index: number) {
+      const next = (index + slides.length) % slides.length;
+      if (next === current) return;
+
+      slides[current].classList.remove("is-active");
+      slides[current].setAttribute("aria-hidden", "true");
+      slides[current].setAttribute("inert", "");
+
+      slides[next].classList.add("is-active");
+      slides[next].setAttribute("aria-hidden", "false");
+      slides[next].removeAttribute("inert");
+
+      current = next;
+    }
+
+    carousel
+      .querySelector("[data-carousel-prev]")
+      ?.addEventListener("click", () => goTo(current - 1));
+    carousel
+      .querySelector("[data-carousel-next]")
+      ?.addEventListener("click", () => goTo(current + 1));
+  });
+</script>
