@@ -258,10 +258,6 @@ su propia columna: se calcula con `window.innerWidth`, no `xPercent`) vía
 
 ## Pendiente antes de lanzar
 
-- `astro.config.mjs` todavía no define `site`. Sin eso, las URLs canónicas y
-  las de Open Graph/Twitter (generadas en `Layout.astro`) resuelven contra
-  `localhost` en vez del dominio real. Configúralo apenas se defina el
-  dominio de producción.
 - Licencia comercial de Bifur sin resolver (ver nota en Tipografía). No
   lanzar a producción con `public/fonts/BIFUR___.TTF` hasta confirmarla.
 
