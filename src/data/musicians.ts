@@ -41,14 +41,14 @@ export const musicians: Musician[] = [
     slug: "Sara Alvarez",
     name: "Sara Alvarez",
     role: "Violonchelo",
-    bio: "Biografía pendiente: una o dos frases sobre su formación y trayectoria.",
+    bio: "Violonchelista graduada con honores de la Universidad Nacional de Colombia. Se ha desempeñado como violonchelista jefe de la Orquesta Filarmónica de Mujeres 2022 - 2025, donde tuvo la oportunidad de ser solista durante el 'Premio Filarmónico de Composición de mujeres para mujeres': convocatoria de estímulos en 2023. Es integrante de “La Sociedad ensamble”, proyecto invitado a participar en el XI Festival Internacional de Música CiMa 2026, y de la agrupación “Micelio”, ganadora de la convocatoria Jóvenes Interpretes 2027 en la categoría “agrupaciones de jazz, músicas latinoamericanas y del mundo”, y seleccionada para participar en el 28 Festival de Blues y Jazz en la Libélula Dorada.Actualmente se encuentra cursando la maestría interdisciplinar en Teatro y Artes Vivas en la Universidad Nacional de Colombia.",
     image: musicianImage("sara.jpg"),
   },
   {
     slug: "Miguelangel Villanueva",
     name: "Miguelangel Villanueva",
     role: "Clarinete",
-    bio: "Biografía pendiente: una o dos frases sobre su formación y trayectoria.",
+    bio: "Miguelangel Villanueva-Bejarano es clarinetista, educador musical y gestor cultural colombiano. Es graduado como Maestro en Música del Conservatorio de la Universidad Nacional de Colombia bajo la guía del maestro Robert DeGennaro, cuenta con formación de posgrado en metodologías pedagógicas por la Universidad Javeriana, un Diplomado en Música de Cámara del Conservatorio Adolfo Mejía / Festival de Música de Cartagena y actualmente es Orchestral Fellow del OAcademy Orchestra Institute.Ha colaborado como clarinetista supernumerario con la Orquesta Sinfónica Nacional de Colombia y la Orquesta Filarmónica de Bogotá, además de integrar la Nueva Filarmónica, la Orquesta Filarmónica Juvenil de Bogotá y la Joven Orquesta de Pamplona (España). Actualmente se desempeña como Concertino de la Banda Sinfónica Especial de Cota y Fellow en la Sinfonietta Academy.Como fundador y director de agrupaciones como Ensamble Zocoró, Maljazzviajante y el colectivo interdisciplinario El Tiempo No Será Más, ha sido galardonado con el Premio de Música de Cámara de la OFB, el Premio Jóvenes Emergentes IDARTES y múltiples selecciones en la Serie Jóvenes Intérpretes del Banco de la República (2024, 2026). Alterna su actividad artística con la docencia en el PFM del Conservatorio de la Universidad Nacional de Colombia y en la Secretaría de Cultura de Cota.",
     image: musicianImage("miguelw.jpg"),
   },
   {
