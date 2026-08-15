@@ -58,8 +58,11 @@ galerías, MAMBO).
   scroll hecho, el overlay tapaba el contenido, y porque el colectivo
   prefirió que la foto y el nombre se comporten como contenido real de la
   página en vez de una animación de entrada que desaparece sola.
-- Tipografía autoalojada en `public/fonts/` (ver abajo). Nunca enlazar
-  Google Fonts por `<link>` en producción.
+- Tipografía: Bodoni Moda autoalojada en `public/fonts/` (ver abajo). La
+  voz secundaria (Univers Next Pro) es la única excepción: viene de Adobe
+  Fonts/Typekit vía `<link>` en `Layout.astro`, porque ese servicio no
+  permite descargar los archivos para autoalojarlos. Nunca enlazar Google
+  Fonts por `<link>` en producción.
 - Skill de diseño base instalado en `.claude/skills/design-taste-frontend`
   (Taste Skill). Sus reglas de composición (retícula, densidad, anti-clichés
   de IA, ban de em-dash, etc.) aplican a todo el sitio salvo que este
@@ -97,12 +100,19 @@ solo acento por página:**
 - `Bodoni Moda` (voz primaria, titulares): serif afilada de alto contraste,
   alternativa gratuita a Ogg / GT Alpina / Editorial New. Variable font,
   archivos en `public/fonts/bodoni-variable(-italic).woff2`.
-- `Archivo` (voz secundaria, cuerpo/UI): neogrotesca aséptica e
-  hiperlegible, alternativa gratuita a Suisse Int'l / Neue Haas Grotesk.
-  Variable font, archivos en `public/fonts/archivo-variable(-italic).woff2`.
-- Confirmar con el colectivo si eventualmente licencian las tipografías
-  premium originales (Grilli Type, Swiss Typefaces); mientras tanto estas
-  son las fuentes de producción, no un placeholder temporal.
+- `Univers Next Pro` (voz secundaria, cuerpo/UI): neogrotesca aséptica e
+  hiperlegible. A diferencia de Bodoni Moda, esta sí es la tipografía real
+  con licencia (no una alternativa gratuita): se sirve vía Adobe Fonts/
+  Typekit (`<link rel="stylesheet" href="https://use.typekit.net/rlv0fei.css">`
+  en `Layout.astro`), no autoalojada, porque Adobe Fonts no permite
+  descargar los archivos. El kit incluye también variantes compressed/
+  condensed/extended sin usar todavía; si hace falta una para UI muy
+  angosta, ya está disponible sin tocar el `<link>`.
+- Bodoni Moda sigue siendo una alternativa gratuita a Ogg / GT Alpina /
+  Editorial New. Confirmar con el colectivo si eventualmente la
+  reemplazan por la tipografía premium original (Grilli Type, Swiss
+  Typefaces); mientras tanto es la fuente de producción, no un
+  placeholder temporal.
 - **Bifur (`.font-wordmark` en `global.css`, archivo
   `public/fonts/BIFUR___.TTF`): en prueba, no confirmada para producción.**
   Se usa únicamente en las tres apariciones del nombre completo del

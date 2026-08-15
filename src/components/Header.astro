@@ -35,11 +35,11 @@ const { transparent = false } = Astro.props;
       aria-label="Colectivo El tiempo no será más, inicio"
       data-header-text
       class:list={[
-        // translate-y: Bifur (font-wordmark) tiene metricas verticales
-        // distintas a Archivo; sin este ajuste el wordmark se ve pegado
-        // hacia arriba respecto al boton "Menu", aunque ambas cajas de
-        // linea esten centradas igual dentro del header.
-        "font-wordmark text-3xl uppercase tracking-[0.16em] transition-colors duration-300 translate-y-[2.8px]-translate-x-1",
+        // translate-y/-x: Bifur (font-wordmark) tiene metricas verticales
+        // distintas al font-sans; sin este ajuste el wordmark se ve
+        // pegado hacia arriba respecto al boton "Menu", aunque ambas
+        // cajas de linea esten centradas igual dentro del header.
+        "font-wordmark text-3xl uppercase tracking-[0.16em] transition-colors duration-300 translate-y-[2.8px] -translate-x-1",
         transparent ? "text-paper" : "text-ink",
       ]}
     >

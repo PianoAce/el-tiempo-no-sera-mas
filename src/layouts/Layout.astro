@@ -58,6 +58,12 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
       crossorigin
     />
 
+    <!-- Voz secundaria (cuerpo/UI): Univers Next Pro via Adobe Fonts
+         (Typekit). Unica excepcion a "todo autoalojado": Adobe Fonts no
+         permite descargar los archivos, solo sirve este kit CSS. Ver
+         --font-sans en global.css. -->
+    <link rel="stylesheet" href="https://use.typekit.net/rlv0fei.css" />
+
     <title>{title}</title>
   </head>
   <body class="min-h-dvh bg-paper text-ink antialiased">

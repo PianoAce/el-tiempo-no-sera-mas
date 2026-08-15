@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------
-   Tipografia autoalojada.
+   Tipografia.
    Voz primaria (titulares): Bodoni Moda, serif afilada de alto contraste,
-   alternativa gratuita a Ogg / GT Alpina / Editorial New.
-   Voz secundaria (cuerpo): Archivo, neogrotesca aseptica e hiperlegible,
-   alternativa gratuita a Suisse Int'l / Neue Haas Grotesk.
-   Ambas son fuentes variables: un solo archivo cubre todo el rango de peso.
+   alternativa gratuita a Ogg / GT Alpina / Editorial New. Autoalojada
+   (variable font, un solo archivo cubre todo el rango de peso).
+   Voz secundaria (cuerpo/UI): Univers Next Pro, via Adobe Fonts/Typekit
+   (link en Layout.astro). Unica excepcion a "todo autoalojado" del
+   proyecto: Adobe Fonts no permite descargar los archivos, solo sirve un
+   kit CSS con @font-face ya resueltos, por eso no hay uno propio aqui.
 --------------------------------------------------------------------- */
 @font-face {
   font-family: "Bodoni Moda";
@@ -22,22 +24,6 @@
   font-weight: 400 800;
   font-display: swap;
   src: url("/fonts/bodoni-variable-italic.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Archivo";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url("/fonts/archivo-variable.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Archivo";
-  font-style: italic;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url("/fonts/archivo-variable-italic.woff2") format("woff2");
 }
 
 /* Bifur (Cassandre, 1929): en prueba, solo para el nombre del colectivo
@@ -76,7 +62,7 @@
 
   /* tipografia */
   --font-display: "Bodoni Moda", "Times New Roman", serif;
-  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "univers-next-pro", "Helvetica Neue", Arial, sans-serif;
 
   /* tamanos de titular grande, fluidos (clamp) en vez de fijos: se
      achican solos en mobile en vez de desbordarse. Antes vivian como
