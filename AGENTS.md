@@ -57,7 +57,13 @@ galerías, MAMBO).
   segundos (splash clásico); se descartó porque en móvil, al recargar con
   scroll hecho, el overlay tapaba el contenido, y porque el colectivo
   prefirió que la foto y el nombre se comporten como contenido real de la
-  página en vez de una animación de entrada que desaparece sola.
+  página en vez de una animación de entrada que desaparece sola. La foto
+  cambia por breakpoint con `<picture>`/`<source media="(max-width:
+  767px)">`: la de escritorio es horizontal y recortada queda muy apretada
+  en mobile, así que ahí se sirve `etnsm-cuarteto-vertical.jpg` (una toma
+  vertical distinta, no la misma foto reescalada). Si el hero necesita
+  otro art-direction por breakpoint en el futuro, este es el patrón a
+  reutilizar en vez de forzar una sola foto con `object-position`.
 - Tipografía: Bodoni Moda autoalojada en `public/fonts/` (ver abajo). La
   voz secundaria (Univers Next Pro) es la única excepción: viene de Adobe
   Fonts/Typekit vía `<link>` en `Layout.astro`, porque ese servicio no
@@ -254,6 +260,21 @@ actual en `--accent` (uso permitido del acento: numeración), y una entrada
 deslizándose desde los bordes reales de la pantalla (no desde el borde de
 su propia columna: se calcula con `window.innerWidth`, no `xPercent`) vía
 `[data-side="left"|"right"]` + ScrollTrigger en `motion.ts`.
+
+Posición de las flechas: en desktop van centradas verticalmente sobre
+toda la sección (`md:top-1/2`), a los bordes izquierdo/derecho, donde no
+chocan con nada. En mobile la foto y la info quedan apiladas (una sola
+columna), así que ni "centrado en toda la sección" ni "pegado al fondo"
+funcionan: lo primero las monta sobre la foto (bajo contraste, un ícono
+`text-ink/40` sin fondo se pierde contra una foto oscura) y lo segundo las
+monta sobre el texto si el título/fecha ocupa más de una línea. La
+solución (`top-[calc(92.31vw+32px)]`, sin `md:`) las ancla justo debajo
+del borde inferior de la foto (`92.31vw` = alto real de la caja
+`aspect-13/12` a 100% del ancho de pantalla), en el padding vacío antes de
+que arranque el texto: ahí siempre hay fondo papel (buen contraste) y
+nunca hay texto todavía, sin importar cuánto mida el título o la fecha.
+Si cambias el aspect ratio de la foto, recalcula ese `92.31vw` (es
+`100% × altura/ancho del ratio` en vw).
 
 ## Flujo de trabajo
 
